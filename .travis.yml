@@ -7,3 +7,13 @@ services:
 jdk:
   - openjdk7
   - oraclejdk7
+  - oraclejdk8
+env:
+  - PLAY_VERSION=2.4.0
+  - PLAY_VERSION=2.3.9
+matrix:
+  exclude:
+    - env: PLAY_VERSION=2.4.0
+      jdk: openjdk7
+    - env: PLAY_VERSION=2.4.0
+      jdk: oraclejdk7
