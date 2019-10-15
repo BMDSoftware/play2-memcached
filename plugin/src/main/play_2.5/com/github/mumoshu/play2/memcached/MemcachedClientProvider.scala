@@ -9,7 +9,7 @@ import scala.concurrent.Future
 
 import javax.inject.{Inject, Singleton, Provider}
 
-import net.spy.memcached.{ConnectionFactoryBuilder, AddrUtil, MemcachedClient}
+import net.spy.memcached.{ConnectionFactoryBuilder, AddrUtil, MemcachedClient, FailureMode}
 
 @Singleton
 class MemcachedClientProvider @Inject() (configuration: Configuration, lifecycle: ApplicationLifecycle) extends Provider[MemcachedClient] {
@@ -43,6 +43,7 @@ class MemcachedClientProvider @Inject() (configuration: Configuration, lifecycle
           val cf = new ConnectionFactoryBuilder()
             .setProtocol(ConnectionFactoryBuilder.Protocol.BINARY)
             .setAuthDescriptor(ad)
+            .setFailureMode(FailureMode.Retry)
             .build()
 
           new MemcachedClient(cf, addrs)

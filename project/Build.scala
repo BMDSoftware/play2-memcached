@@ -6,7 +6,7 @@ import com.typesafe.sbt.pgp.PgpKeys._
 object ApplicationBuild extends Build {
 
   val appName         = "play2-memcached-" + playShortName
-  val appVersion      = "0.8.0"
+  val appVersion      = "0.8.1-BMD-SNAPSHOT"
 
   lazy val baseSettings = Seq(
     parallelExecution in Test := false
@@ -45,7 +45,8 @@ object ApplicationBuild extends Build {
   lazy val plugin = Project(appName, base = file("plugin"))
     .settings(baseSettings: _*)
     .settings(
-      resolvers += "Typesafe Maven Repository" at "https://dl.bintray.com/typesafe/maven-releases/",
+      resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/",
+      resolvers += "Typesafe Maven Repository" at "http://repo.typesafe.com/typesafe/maven-releases/",
       resolvers += "Spy Repository" at "http://files.couchbase.com/maven2",
       resolvers += "Scalaz Bintray Repo"  at "http://dl.bintray.com/scalaz/releases",
       libraryDependencies += "net.spy" % "spymemcached" % "2.9.0",
@@ -57,9 +58,9 @@ object ApplicationBuild extends Build {
       version := appVersion,
       publishTo := {
         val v = version.value
-        val nexus = "https://oss.sonatype.org/"
+        val nexus = "https://dev.bmd-software.com/nexus/"
         if (v.trim.endsWith("SNAPSHOT")) Some("snapshots" at nexus + "content/repositories/snapshots")
-        else                             Some("releases" at nexus + "service/local/staging/deploy/maven2")
+        else                             Some("releases" at nexus + "service/local/staging/releases")
       },
       publishMavenStyle := true,
       publishArtifact in Test := false,

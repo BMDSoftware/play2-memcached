@@ -1,6 +1,6 @@
 package com.github.mumoshu.play2.memcached
 
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.{ TimeUnit, CancellationException }
 
 import net.spy.memcached.transcoders.Transcoder
 import play.api.cache.CacheApi
@@ -30,34 +30,30 @@ class MemcachedCacheApi @Inject() (val namespace: String, client: MemcachedClien
       case _ => TimeUnit.SECONDS
     }
   }
-  def get[T: ClassTag](key: String): Option[T] =
+
+  def get[T: ClassTag](key: String): Option[T] = {
     if (key.isEmpty) {
       None
     } else {
-      val ct = implicitly[ClassTag[T]]
-
-      logger.debug("Getting the cached for key " + namespace + key)
-      val future = client.asyncGet(namespace + key, tc)
       try {
-        val any = future.get(timeout, timeunit)
-        if (any != null) {
-          logger.debug("any is " + any.getClass)
-        }
-
-        Option(
-          any match {
-            case x if ct.runtimeClass.isInstance(x) => x.asInstanceOf[T]
-            case x if ct == ClassTag.Nothing => x.asInstanceOf[T]
-            case x => x.asInstanceOf[T]
-          }
-        )
+        doGet(key)
       } catch {
-        case e: Throwable =>
-          logger.error("An error has occured while getting the value from memcached. ct=" + ct , e)
-          future.cancel(false)
-          None
+        case e: CancellationException => doGet(key)
       }
     }
+  }
+
+  private def doGet[T: ClassTag](key: String): Option[T] = {
+    val ct = implicitly[ClassTag[T]]
+    val any = client.get(namespace + key, tc)
+    Option(
+      any match {
+        case x if ct.runtimeClass.isInstance(x) => x.asInstanceOf[T]
+        case x if ct == ClassTag.Nothing => x.asInstanceOf[T]
+        case x => x.asInstanceOf[T]
+      }
+    )
+  }
 
   def getOrElse[A: ClassTag](key: String, expiration: Duration = Duration.Inf)(orElse: => A): A = {
     get[A](key).getOrElse {

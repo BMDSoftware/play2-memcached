@@ -1,5 +1,7 @@
 ivyLoggingLevel := UpdateLogging.Full
 
+credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
+
 // The Typesafe repository
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
@@ -10,3 +12,4 @@ addSbtPlugin("com.typesafe.play" % "sbt-plugin" % playVersion)
 addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "1.1")
 
 addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.0.0")
+
