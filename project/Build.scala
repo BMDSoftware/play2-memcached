@@ -6,7 +6,7 @@ import com.typesafe.sbt.pgp.PgpKeys._
 object ApplicationBuild extends Build {
 
   val appName         = "play2-memcached-" + playShortName
-  val appVersion      = "0.7.1-BMD-SNAPSHOT"
+  val appVersion      = "0.7.1-BMD"
 
   lazy val baseSettings = Seq(
     parallelExecution in Test := false
@@ -64,7 +64,7 @@ object ApplicationBuild extends Build {
       publishTo <<= version { v: String =>
         val nexus = "https://dev.bmd-software.com/nexus/"
         if (v.trim.endsWith("SNAPSHOT")) Some("snapshots" at nexus + "content/repositories/snapshots")
-        else                             Some("releases" at nexus + "service/local/staging/releases")
+        else                             Some("releases" at nexus + "content/repositories/releases")
       },
       publishMavenStyle := true,
       publishArtifact in Test := false,
