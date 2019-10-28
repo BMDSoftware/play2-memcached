@@ -60,7 +60,7 @@ object ApplicationBuild extends Build {
         val v = version.value
         val nexus = "https://dev.bmd-software.com/nexus/"
         if (v.trim.endsWith("SNAPSHOT")) Some("snapshots" at nexus + "content/repositories/snapshots")
-        else                             Some("releases" at nexus + "service/local/staging/releases")
+        else                             Some("releases" at nexus + "content/repositories/releases")
       },
       publishMavenStyle := true,
       publishArtifact in Test := false,
