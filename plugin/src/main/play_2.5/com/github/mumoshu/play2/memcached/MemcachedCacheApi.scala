@@ -39,6 +39,9 @@ class MemcachedCacheApi @Inject() (val namespace: String, client: MemcachedClien
         doGet(key)
       } catch {
         case e: CancellationException => doGet(key)
+        case e: Throwable =>
+          logger.error("An error has occured while getting the value from memcached. ct=" + ct , e)
+          None
       }
     }
   }
