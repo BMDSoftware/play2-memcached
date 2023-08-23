@@ -69,13 +69,23 @@ class MemcachedCacheApi @Inject() (val namespace: String, client: MemcachedClien
   def set(key: String, value: Any, expiration: Duration = Duration.Inf) {
     if (!key.isEmpty) {
       val exp = if (expiration.isFinite()) expiration.toSeconds.toInt else 0
-      client.set(namespace + key, exp, value, tc)
+      try {
+        client.set(namespace + key, exp, value, tc)
+      } catch {
+        case e: Throwable =>
+          logger.error("An error has occured while setting the value memcached" , e)
+      }
     }
   }
 
   def remove(key: String) {
     if (!key.isEmpty) {
-      client.delete(namespace + key)
+      try {
+        client.delete(namespace + key)
+      } catch {
+        case e: Throwable =>
+          logger.error("An error has occured while removing the value from memcached" , e)
+      }
     }
   }
 }
