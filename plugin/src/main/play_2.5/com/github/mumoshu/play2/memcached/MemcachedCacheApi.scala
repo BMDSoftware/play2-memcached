@@ -39,8 +39,8 @@ class MemcachedCacheApi @Inject() (val namespace: String, client: MemcachedClien
         doGet(key)
       } catch {
         case e: CancellationException => doGet(key)
-        case e: Throwable =>
-          logger.error("An error has occured while getting the value from memcached. ct=" + ct , e)
+        case t: Throwable =>
+          logger.error("An error has occured while getting the value from memcached: " + t.getMessage)
           None
       }
     }
@@ -72,8 +72,8 @@ class MemcachedCacheApi @Inject() (val namespace: String, client: MemcachedClien
       try {
         client.set(namespace + key, exp, value, tc)
       } catch {
-        case e: Throwable =>
-          logger.error("An error has occured while setting the value memcached" , e)
+        case t: Throwable =>
+          logger.error("An error has occured while setting the value memcached: " + t.getMessage)
       }
     }
   }
@@ -83,8 +83,8 @@ class MemcachedCacheApi @Inject() (val namespace: String, client: MemcachedClien
       try {
         client.delete(namespace + key)
       } catch {
-        case e: Throwable =>
-          logger.error("An error has occured while removing the value from memcached" , e)
+        case t: Throwable =>
+          logger.error("An error has occured while removing the value from memcached: " + t.getMessage)
       }
     }
   }
