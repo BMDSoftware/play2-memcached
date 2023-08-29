@@ -5,7 +5,7 @@ credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 // The Typesafe repository
 resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releases/"
 
-val playVersion = scala.util.Properties.envOrElse("PLAY_VERSION", "2.5.0")
+val playVersion = scala.util.Properties.envOrElse("PLAY_VERSION", "2.5.19")
 
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % playVersion)
 
