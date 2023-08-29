@@ -6,7 +6,7 @@ import com.typesafe.sbt.pgp.PgpKeys._
 object ApplicationBuild extends Build {
 
   val appName         = "play2-memcached-" + playShortName
-  val appVersion      = "0.8.1-BMD-SNAPSHOT"
+  val appVersion      = "0.8.1-BMD-2-SNAPSHOT"
 
   lazy val baseSettings = Seq(
     parallelExecution in Test := false
@@ -45,10 +45,11 @@ object ApplicationBuild extends Build {
   lazy val plugin = Project(appName, base = file("plugin"))
     .settings(baseSettings: _*)
     .settings(
-      resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/",
-      resolvers += "Typesafe Maven Repository" at "http://repo.typesafe.com/typesafe/maven-releases/",
-      resolvers += "Spy Repository" at "http://files.couchbase.com/maven2",
-      resolvers += "Scalaz Bintray Repo"  at "http://dl.bintray.com/scalaz/releases",
+      resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releases/",
+      resolvers += DefaultMavenRepository,
+      resolvers += Resolver.mavenLocal,
+      resolvers += "Typesafe Maven Repository" at "https://repo.typesafe.com/typesafe/maven-releases/",
+      resolvers += "Spy Repository" at "https://files.couchbase.com/maven2",
       libraryDependencies += "net.spy" % "spymemcached" % "2.9.0",
       libraryDependencies += "com.typesafe.play" %% "play" % play.core.PlayVersion.current % "provided",
       libraryDependencies += "com.typesafe.play" %% "play-cache" % play.core.PlayVersion.current % "provided",
