@@ -36,9 +36,14 @@ object MemcachedSpec extends Specification {
 
   val modules = play.api.inject.Modules.locate(environment, configuration)
 
+  // check if memcached module
+  def beOurModule: org.specs2.matcher.Matcher[Any] = { m: Any =>
+    m.isInstanceOf[MemcachedModule]
+  }
+
   "play2-memcached" should {
     "provide MemcachedModule" in {
-      (modules.find { module => module.isInstanceOf[MemcachedModule] }.get) must beAnInstanceOf[MemcachedModule]
+      (modules.find { module => module.isInstanceOf[MemcachedModule] }.get) must beOurModule
     }
   }
 
