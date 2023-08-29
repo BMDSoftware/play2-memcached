@@ -50,11 +50,11 @@ object ApplicationBuild extends Build {
       resolvers += Resolver.mavenLocal,
       resolvers += "Typesafe Maven Repository" at "https://repo.typesafe.com/typesafe/maven-releases/",
       resolvers += "Spy Repository" at "https://files.couchbase.com/maven2",
-      libraryDependencies += "net.spy" % "spymemcached" % "2.9.0",
+      libraryDependencies += "net.spy" % "spymemcached" % "2.9.1",
       libraryDependencies += "com.typesafe.play" %% "play" % play.core.PlayVersion.current % "provided",
       libraryDependencies += "com.typesafe.play" %% "play-cache" % play.core.PlayVersion.current % "provided",
       libraryDependencies += "com.typesafe.play" %% "play-test" % play.core.PlayVersion.current % "provided,test",
-      libraryDependencies += "org.specs2" %% "specs2" % "2.4.15" % "test",
+      libraryDependencies += "org.specs2" %% "specs2" % "3.7" % "test",
       organization := "com.github.mumoshu",
       version := appVersion,
       publishTo := {
