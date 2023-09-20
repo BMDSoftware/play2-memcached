@@ -39,6 +39,9 @@ class MemcachedCacheApi @Inject() (val namespace: String, client: MemcachedClien
         doGet(key)
       } catch {
         case e: CancellationException => doGet(key)
+        case t: Throwable =>
+          logger.error("Failed to get the value in cache: " + t.getMessage)
+          None
       }
     }
   }
@@ -66,13 +69,23 @@ class MemcachedCacheApi @Inject() (val namespace: String, client: MemcachedClien
   def set(key: String, value: Any, expiration: Duration = Duration.Inf) {
     if (!key.isEmpty) {
       val exp = if (expiration.isFinite()) expiration.toSeconds.toInt else 0
-      client.set(namespace + key, exp, value, tc)
+      try {
+        client.set(namespace + key, exp, value, tc)
+      } catch {
+        case t: Throwable =>
+          logger.error("Failed to set the value in cache: " + t.getMessage)
+      }
     }
   }
 
   def remove(key: String) {
     if (!key.isEmpty) {
-      client.delete(namespace + key)
+      try {
+        client.delete(namespace + key)
+      } catch {
+        case t: Throwable =>
+          logger.error("Failed to remove the value from cache: " + t.getMessage)
+      }
     }
   }
 }
