@@ -84,7 +84,7 @@ class MemcachedCacheApi @Inject() (val namespace: String, client: MemcachedClien
         client.delete(namespace + key)
       } catch {
         case t: Throwable =>
-          logger.error("An error has occured while removing the value from memcached: " + t.getMessage)
+          logger.error("Failed to remove the value from cache: " + t.getMessage)
       }
     }
   }
