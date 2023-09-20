@@ -73,7 +73,7 @@ class MemcachedCacheApi @Inject() (val namespace: String, client: MemcachedClien
         client.set(namespace + key, exp, value, tc)
       } catch {
         case t: Throwable =>
-          logger.error("An error has occured while setting the value memcached: " + t.getMessage)
+          logger.error("Failed to set the value in cache: " + t.getMessage)
       }
     }
   }
